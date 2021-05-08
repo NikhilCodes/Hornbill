@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "296630460809",
+    "project_id": "hornbill-6421b",
+    "storage_bucket": "hornbill-6421b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296630460809:android:ba97dd6d26bedf36afc158",
+        "android_client_info": {
+          "package_name": "com.nikhilcodes.hornbill"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296630460809-bh47i826h42dbiacrlelkp1r7skugv1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxa-4QO0zAjn5C9zyX1zm9fZmwjsxf2_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296630460809-bh47i826h42dbiacrlelkp1r7skugv1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
