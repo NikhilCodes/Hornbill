@@ -1,0 +1,16 @@
+production: true
+
+http:
+  host: https://ngrok.xxxxx
+  port: 8000
+
+db:
+  postgres:
+    db_name: hornbilldb
+    password: 123456
+    user: alpha-n1khil
+    port: 5432
+    host: db
+
+api:
+  key: 123abc

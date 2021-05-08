@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - hornbill-nest-network
+    environment:
+      POSTGRES_USER: alpha-n1khil
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: hornbilldb
+
+  api:
+    container_name: hornbill_nest
+    image: hornbill-nest:1.0.0
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+    command: yarn start:debug
+    ports:
+      -  8000:8000
+
+    networks:
+      - hornbill-nest-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src
+
+    restart: unless-stopped
+
+networks:
+  hornbill-nest-network:
