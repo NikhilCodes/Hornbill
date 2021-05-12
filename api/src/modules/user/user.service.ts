@@ -27,6 +27,13 @@ export class UserService {
     return this.userRepository.findOne({ where: { phoneNumber } });
   }
 
+  getUserById(obj: { userId: string }) {
+    return this.userRepository.findOne({
+      where: { id: obj.userId },
+      select: ['avatarImageUrl', 'phoneNumber', 'username', 'id'],
+    });
+  }
+
   getUserByIdAndToken(obj: GetUserDto) {
     return this.userRepository.findOne({
       where: obj,

@@ -22,6 +22,11 @@ export class UserController {
     private configService: ConfigService,
   ) {}
 
+  @Get(':userId')
+  getUserById(@Param('userId') userId) {
+    return this.userService.getUserById(userId);
+  }
+
   @Post()
   createUser(@Body() obj: CreateUserDto) {
     return this.userService.createUser(obj);

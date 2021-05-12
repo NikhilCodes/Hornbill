@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/constants/Routes.dart';
+import 'package:client/providers/ChatRoom.dart';
 import 'package:client/providers/ParticipatedChatRooms.dart';
 import 'package:client/providers/User.dart';
 import 'package:client/screens/Login.dart';
@@ -25,63 +26,69 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       body: hasEncounteredError
           ? LoginScreen()
-          : hasLoaded
-              ? Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.white
-                    ),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                    ),
-                  ),
-                  child: ListView.builder(
-                    itemCount: chatRooms.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        child: ListTileTheme(
-                          minVerticalPadding: 30,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ListTile(
-                            tileColor: Colors.white,
-                            onTap: () {},
-                            title: Text(chatRooms[index]['chatRoom']['name']),
-                            leading:
-                                chatRooms[index]['chatRoom']['imageUrl'] == ''
-                                    ? SizedBox(
+          : Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(width: 2, color: Colors.white),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                ),
+              ),
+              child: hasLoaded
+                  ? ListView.builder(
+                      itemCount: chatRooms.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          child: ListTileTheme(
+                            minVerticalPadding: 30,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.white,
+                              onTap: () {
+                                Provider.of<ChatRoom>(context, listen: false)
+                                    .loadChatRoomById(
+                                        chatRooms[index]['chatRoom']['id']);
+                                Navigator.of(context).pushNamed(
+                                    Routes.CHAT_ROOM.path,
+                                    arguments: chatRooms[index]['chatRoom']
+                                        ['id']);
+                              },
+                              title: Text(chatRooms[index]['chatRoom']['name']),
+                              leading: chatRooms[index]['chatRoom']
+                                          ['imageUrl'] ==
+                                      ''
+                                  ? SizedBox(
+                                      height: 50,
+                                      width: 50,
+                                      child: Image(
+                                        image: AssetImage(
+                                            'assets/images/avatar.png'),
+                                        height: 60,
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(40),
+                                      child: CachedNetworkImage(
                                         height: 50,
                                         width: 50,
-                                        child: Image(
-                                          image: AssetImage(
-                                              'assets/images/avatar.png'),
-                                          height: 60,
-                                        ),
-                                      )
-                                    : ClipRRect(
-                                        borderRadius: BorderRadius.circular(40),
-                                        child: CachedNetworkImage(
-                                          height: 50,
-                                          width: 50,
-                                          fit: BoxFit.cover,
-                                          imageUrl: chatRooms[index]['chatRoom']
-                                              ['imageUrl'],
-                                        ),
+                                        fit: BoxFit.cover,
+                                        imageUrl: chatRooms[index]['chatRoom']
+                                            ['imageUrl'],
                                       ),
+                                    ),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-              : Center(
-                  child: CircularProgressIndicator(),
-                ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(Routes.CREATE_CHAT.path);

@@ -6,6 +6,7 @@ enum Routes {
   CREATE_CHAT,
   CONTACT_SELECT,
   CREATE_GROUP_FORM,
+  CHAT_ROOM,
 }
 
 extension RoutesExtension on Routes {

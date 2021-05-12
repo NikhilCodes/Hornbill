@@ -37,6 +37,14 @@ export class ChatRoomService {
     return newlyCreatedChatRoom;
   }
 
+  async getChatRoomById(roomId: string) {
+    return this.chatRoomRepository.findOne({
+      where: {
+        id: roomId,
+      },
+    });
+  }
+
   async getChatRoomsByUserId(userId: string) {
     return this.participationRepository.find({
       relations: ['chatRoom'],

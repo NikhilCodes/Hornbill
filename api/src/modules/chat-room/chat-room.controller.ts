@@ -22,8 +22,13 @@ export class ChatRoomController {
     private configService: ConfigService,
   ) {}
 
-  @Get(':userId')
-  async getChatRoomsByUserId(@Param() params: { userId: string }) {
+  @Get(':roomId')
+  getChatRoomById(@Param() params: { roomId: string }) {
+    return this.chatRoomService.getChatRoomById(params.roomId);
+  }
+
+  @Get('user/:userId')
+  getChatRoomsByUserId(@Param() params: { userId: string }) {
     return this.chatRoomService.getChatRoomsByUserId(params.userId);
   }
 

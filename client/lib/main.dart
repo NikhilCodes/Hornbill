@@ -1,7 +1,9 @@
 import 'package:client/constants/Routes.dart';
 import 'package:client/constants/StringConstants.dart';
+import 'package:client/providers/ChatRoom.dart';
 import 'package:client/providers/ParticipatedChatRooms.dart';
 import 'package:client/providers/User.dart';
+import 'package:client/screens/ChatRoomScreen.dart';
 import 'package:client/screens/ContactSelection.dart';
 import 'package:client/screens/CreateChatRoom.dart';
 import 'package:client/screens/Home.dart';
@@ -34,7 +36,16 @@ class MyApp extends StatelessWidget {
           update: (context, value, previous) {
             return ParticipatedChatRooms(userProvider: value);
           },
-        )
+        ),
+        ChangeNotifierProxyProvider<User, ChatRoom>(
+          create: (context) {
+            return ChatRoom(
+                userProvider: Provider.of<User>(context, listen: false));
+          },
+          update: (context, value, previous) {
+            return ChatRoom(userProvider: value);
+          },
+        ),
       ],
       child: MaterialApp(
         title: AppName,
@@ -47,6 +58,7 @@ class MyApp extends StatelessWidget {
           Routes.CREATE_CHAT.path: (context) => CreateChatRoomScreen(),
           Routes.CREATE_GROUP_FORM.path: (context) => CreateGroupFormScreen(),
           Routes.CONTACT_SELECT.path: (context) => ContactSelectionScreen(),
+          Routes.CHAT_ROOM.path: (context) => ChatRoomScreen(),
         },
         theme: ThemeData(
           // This is the theme of your application.

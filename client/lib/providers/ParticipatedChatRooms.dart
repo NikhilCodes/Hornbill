@@ -21,7 +21,7 @@ class ParticipatedChatRooms extends ChangeNotifier {
 
     if (userId == '') return;
     var response = (await http.get(
-      Uri.parse('$API_URL/chat-room/$userId'),
+      Uri.parse('$API_URL/chat-room/user/$userId'),
     ))
         .body;
 
