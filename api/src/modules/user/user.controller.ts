@@ -60,11 +60,9 @@ export class UserController {
   uploadAvatar(@UploadedFile() file: Express.Multer.File) {
     return {
       filename: file.filename,
-      url: `${this.configService.get('http.host')}${
-        this.configService.get('production')
-          ? ''
-          : `:${this.configService.get('http.port')}`
-      }/api/user/avatar/${file.filename}`,
+      url: `${this.configService.get('http.host')}:${this.configService.get(
+        'http.port',
+      )}/api/user/avatar/${file.filename}`,
     };
   }
 

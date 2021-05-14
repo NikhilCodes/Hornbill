@@ -58,11 +58,9 @@ export class ChatRoomController {
   uploadGroupImage(@UploadedFile() file: Express.Multer.File) {
     return {
       filename: file.filename,
-      url: `${this.configService.get('http.host')}${
-        this.configService.get('production')
-          ? ''
-          : `:${this.configService.get('http.port')}`
-      }/api/chat-room/group-profile-image/${file.filename}`,
+      url: `${this.configService.get('http.host')}:${this.configService.get(
+        'http.port',
+      )}/api/chat-room/group-profile-image/${file.filename}`,
     };
   }
 
