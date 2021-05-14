@@ -1,7 +1,7 @@
 production: true
 
 http:
-  host: https://ngrok.xxxxx
+  host: http://hornbill.nikhilcodes.in
   port: 8000
 
 db:
