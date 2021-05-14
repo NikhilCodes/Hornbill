@@ -70,10 +70,10 @@ class MyApp extends StatelessWidget {
           // or simply save your changes to "hot reload" in a Flutter IDE).
           // Notice that the counter didn't reset back to zero; the application
           // is not restarted.
-          primarySwatch: Colors.deepPurple,
-          primaryColor: Colors.deepPurple.shade800,
+          primarySwatch: Colors.deepOrange,
+          primaryColor: Colors.grey.shade900,
           accentColor: Colors.purpleAccent.shade700,
-          fontFamily: 'Comfortaa',
+          fontFamily: 'Roboto',
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/constants/Routes.dart';
+import 'package:client/providers/ParticipatedChatRooms.dart';
 import 'package:client/providers/User.dart';
 import 'package:client/widgets/FunkyListTIle.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,8 @@ class _CreateGroupFormScreenState extends State<CreateGroupFormScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check, size: 40),
         onPressed: () async {
-          String adminContact = Provider.of<User>(context, listen: false).phoneNumber;
+          String adminContact =
+              Provider.of<User>(context, listen: false).phoneNumber;
           if (!contactsToAdd.contains(adminContact)) {
             contactsToAdd.add(adminContact);
           }
@@ -162,8 +164,11 @@ class _CreateGroupFormScreenState extends State<CreateGroupFormScreen> {
           ))
               .body);
 
+          Provider.of<ParticipatedChatRooms>(context, listen: false)
+              .loadRoomParticipation();
           String groupId = jsonOutput['id'];
-          Navigator.of(context).pushNamedAndRemoveUntil(Routes.HOME.path, (route) => false);
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(Routes.HOME.path, (route) => false);
         },
       ),
     );

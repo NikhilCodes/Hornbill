@@ -9,6 +9,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 class ChatRoom extends ChangeNotifier {
   String name = '';
   String id = '';
+  String imageUrl = '';
   List<Map> messages = [];
   Map<String, String> mapUserIdToName = {};
   late IO.Socket socket;
@@ -41,6 +42,7 @@ class ChatRoom extends ChangeNotifier {
 
   loadChatRoomById(String id) async {
     this.name = '';
+    this.imageUrl = '';
     this.id = id;
     this.messages = [];
 
@@ -50,6 +52,7 @@ class ChatRoom extends ChangeNotifier {
         .body);
 
     this.name = response['name'];
+    this.imageUrl = response['imageUrl'];
     notifyListeners();
     this.becomeDeafToAllRooms();
     this.listenToCurrentActiveRoom();

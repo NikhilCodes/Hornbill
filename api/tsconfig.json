@@ -17,11 +17,4 @@
       "module": "commonjs"
     }
   },
-  "include": [
-    "src",
-    "node_modules"
-  ],
-  "exclude": [
-    "client"
-  ]
 }
