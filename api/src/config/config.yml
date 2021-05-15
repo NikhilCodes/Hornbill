@@ -2,7 +2,7 @@ production: true
 
 http:
   host: http://hornbill.nikhilcodes.in
-  port: 8000
+  port: 80
 
 db:
   postgres:

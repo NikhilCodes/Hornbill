@@ -1,9 +1,15 @@
+import { readFileSync } from 'fs';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    httpsOptions: {
+      key: readFileSync('/etc/letsencrypt/live/nikhilcodes.in/privkey.pem'),
+      cert: readFileSync('/etc/letsencrypt/live/nikhilcodes.in/fullchain.pem'),
+    },
+  });
   const configService = app.get<ConfigService>(ConfigService);
 
   app.setGlobalPrefix('api');
