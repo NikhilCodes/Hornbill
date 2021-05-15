@@ -2,15 +2,15 @@ production: true
 
 http:
   host: http://hornbill.nikhilcodes.in
-  port: 80
+  port: 8000
 
 db:
   postgres:
     db_name: hornbilldb
     password: 123456
-    user: alpha-n1khil
+    user: postgres
     port: 5432
-    host: db
+    host: 127.0.0.1
 
 api:
   key: 123abc
