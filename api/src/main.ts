@@ -6,8 +6,8 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions: {
-      key: readFileSync('./secrets/server.key'),
-      cert: readFileSync('/secrets/server.crt'),
+      key: readFileSync('/etc/letsencrypt/live/nikhilcodes.in/privkey.pem'),
+      cert: readFileSync('/etc/letsencrypt/live/nikhilcodes.in/fullchain.pem'),
     },
   });
   const configService = app.get<ConfigService>(ConfigService);
