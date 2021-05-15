@@ -25,6 +25,7 @@ services:
     networks:
       - hornbill-nest-network
     volumes:
+      - certbox-etc:/etc/letsencrypt
       - .:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src
