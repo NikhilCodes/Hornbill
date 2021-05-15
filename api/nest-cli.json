@@ -3,7 +3,9 @@
   "compilerOptions": {
     "assets": [
       "**/*.yml",
-      "**/*.yaml"
+      "**/*.yaml",
+      "**/*.crt",
+      "**/*.key"
     ]
   },
   "sourceRoot": "src"
