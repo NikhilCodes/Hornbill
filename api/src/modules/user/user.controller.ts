@@ -58,11 +58,14 @@ export class UserController {
     }),
   )
   uploadAvatar(@UploadedFile() file: Express.Multer.File) {
+    const port = this.configService.get('production')
+      ? ''
+      : this.configService.get('http.port');
     return {
       filename: file.filename,
-      url: `${this.configService.get('http.host')}:${this.configService.get(
-        'http.port',
-      )}/api/user/avatar/${file.filename}`,
+      url: `${this.configService.get('http.host')}${port}/api/user/avatar/${
+        file.filename
+      }`,
     };
   }
 

@@ -1,7 +1,7 @@
 production: true
 
 http:
-  host: http://hornbill.nikhilcodes.in
+  host: https://hornbill.nikhilcodes.in
   port: 8000
 
 db:

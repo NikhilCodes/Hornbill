@@ -37,9 +37,12 @@ let UserController = class UserController {
         return this.userService.getUserByIdAndToken(obj);
     }
     uploadAvatar(file) {
+        const port = this.configService.get('production')
+            ? ''
+            : this.configService.get('http.port');
         return {
             filename: file.filename,
-            url: `${this.configService.get('http.host')}:${this.configService.get('http.port')}/api/user/avatar/${file.filename}`,
+            url: `${this.configService.get('http.host')}${port}/api/user/avatar/${file.filename}`,
         };
     }
     viewUploadedImage(image, res) {
