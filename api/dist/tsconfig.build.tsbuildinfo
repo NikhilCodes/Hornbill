@@ -3227,7 +3227,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/messaging/messaging.gateway.ts": {
-        "version": "e7895c08f20aa7bbc815f6ba946c54135258ab7fb9abfa5cfd5ad5e40b4cc78d",
+        "version": "f5b7607904aff5522c175f0bd6627d989927b0f58ca341188a4a6d9fc053237a",
         "signature": "695214a31d6834a208f464b926aad50a65604531717feb5b7d62da17117f0ea7",
         "affectsGlobalScope": false
       },
@@ -3482,7 +3482,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/user/user.gateway.ts": {
-        "version": "5df3b8f7beaa4a27bdc2a8fdb82700aa27565b1720ed489841fb03b41d0ba269",
+        "version": "3b1dcbe81dc10c764c84f6f0ac0720d60c123a44e305661a7f412862184c3ace",
         "signature": "dae8f545595cd08e1ffd5633cd697f9cf3d65956bec134b29db8b59cc3e90485",
         "affectsGlobalScope": false
       },

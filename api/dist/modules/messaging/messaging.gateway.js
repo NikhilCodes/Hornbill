@@ -72,7 +72,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], MessagingGateway.prototype, "handleMessage", null);
 MessagingGateway = MessagingGateway_1 = __decorate([
-    websockets_1.WebSocketGateway(81, { namespace: 'messaging' }),
+    websockets_1.WebSocketGateway(8001, { namespace: 'messaging' }),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], MessagingGateway);
 exports.MessagingGateway = MessagingGateway;

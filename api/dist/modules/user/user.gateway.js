@@ -50,7 +50,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserGateway.prototype, "isPhoneNumberOfRegisteredUser", null);
 UserGateway = UserGateway_1 = __decorate([
-    websockets_1.WebSocketGateway(81, { namespace: 'user' }),
+    websockets_1.WebSocketGateway(8001, { namespace: 'user' }),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserGateway);
 exports.UserGateway = UserGateway;
