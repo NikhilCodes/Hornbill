@@ -11,7 +11,7 @@ import { Server, Socket } from 'socket.io';
 import { ContactDto } from '../../shared/dto/user.dto';
 import { UserService } from './user.service';
 
-@WebSocketGateway({ namespace: 'user' })
+@WebSocketGateway(81, { namespace: 'user' })
 export class UserGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(UserGateway.name);
 

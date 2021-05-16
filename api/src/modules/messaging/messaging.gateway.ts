@@ -10,7 +10,7 @@ import { Logger } from '@nestjs/common';
 import { MessagePayloadDto } from '../../shared/dto/messaging.dto';
 import { UserService } from '../user/user.service';
 
-@WebSocketGateway({ namespace: 'messaging' })
+@WebSocketGateway(81, { namespace: 'messaging' })
 export class MessagingGateway
   implements OnGatewayDisconnect, OnGatewayConnection {
   private readonly logger = new Logger(MessagingGateway.name);

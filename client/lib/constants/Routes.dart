@@ -15,5 +15,5 @@ extension RoutesExtension on Routes {
   }
 }
 
-const API_URL = 'http://hornbill.nikhilcodes.in:8000/api';
-const WEB_SOCKET_URL = 'http://hornbill.nikhilcodes.in:8000';
+const API_URL = 'https://hornbill.nikhilcodes.in/api';
+const WEB_SOCKET_URL = 'https://hornbill.nikhilcodes.in:81';
