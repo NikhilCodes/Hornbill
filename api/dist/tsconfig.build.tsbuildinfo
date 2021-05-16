@@ -3532,7 +3532,7 @@
         "affectsGlobalScope": false
       },
       "../src/modules/chat-room/chat-room.controller.ts": {
-        "version": "ddf9b63d1aac1f9a4bfcfd97a6c5778c649ed714a7577fb1226761d07fb200b1",
+        "version": "5f57670875daf67a6d52e387992665d444caf17eda2fe9fbcbaf9faae8427cd4",
         "signature": "a11271207f549e9e24e9a7bae5ba628f7df29d2382afee62851fc5f448268efc",
         "affectsGlobalScope": false
       },
