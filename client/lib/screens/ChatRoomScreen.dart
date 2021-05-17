@@ -62,9 +62,7 @@ class ChatBlob extends StatelessWidget {
                 Text(
                   message,
                   style: TextStyle(
-                    color: isOutgoingMessage
-                        ? Colors.white
-                        : Theme.of(context).primaryColor,
+                    color: Colors.white,
                   ),
                 ),
                 Text(
@@ -87,6 +85,7 @@ class ChatRoomScreen extends StatefulWidget {
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   TextEditingController messageTextController = new TextEditingController();
+  ScrollController chatListViewController = new ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +156,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           children: [
             Flexible(
               child: ListView.builder(
+                controller: chatListViewController,
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
+                  chatListViewController.animateTo(
+                    chatListViewController.position.maxScrollExtent,
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.fastOutSlowIn,
+                  );
                   return ChatBlob(
                     message: messages[index]['message'],
                     senderName: messages[index]['senderName'],
@@ -174,11 +179,12 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 children: [
                   Flexible(
                     child: TextField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
+                      // maxLength: 200,
                       controller: messageTextController,
-                      style: TextStyle(
-                        fontSize: 17,
-                        color: Colors.white
-                      ),
+                      style: TextStyle(fontSize: 17, color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Message',
                         hintStyle: TextStyle(
@@ -217,8 +223,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     margin: EdgeInsets.only(left: 10),
                     child: TextButton(
                       onPressed: () {
+                        if (messageTextController.text.trim().length == 0)
+                          return;
                         Provider.of<ChatRoom>(context, listen: false)
-                            .sendMessage(messageTextController.text, userId);
+                            .sendMessage(
+                          messageTextController.text,
+                          userId,
+                        );
+                        messageTextController.clear();
                       },
                       child: Icon(Icons.send),
                       style: ButtonStyle(

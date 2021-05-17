@@ -76,13 +76,12 @@ class User extends ChangeNotifier {
       Uri.parse('$API_URL/user'),
       body: {
         'username': name,
-        'phoneNumber': '+91' + phoneNumber,
+        'phoneNumber': phoneNumber,
         'avatarImageUrl': this.avatarUrl,
       },
     ))
         .body);
-
-    this.name = jsonOutput['username'];
+    this.name = jsonOutput['username'].toString();
     this.phoneNumber = jsonOutput['phoneNumber'];
     this.userId = jsonOutput['id'];
 

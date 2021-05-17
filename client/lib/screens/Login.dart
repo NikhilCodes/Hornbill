@@ -7,6 +7,7 @@ import 'package:client/providers/User.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuthLibrary;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_auth_ui/flutter_auth_ui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
@@ -319,6 +320,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isProvidingOtp = false;
 
   @override
+  void initState() {
+    _auth.authStateChanges().listen((FirebaseAuthLibrary.User? user) {
+      if (user != null) {
+        print(user.phoneNumber);
+      }
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     String avatarUrl = Provider.of<User>(context).avatarUrl;
 
@@ -326,7 +337,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 80),
+          padding: EdgeInsets.symmetric(
+              horizontal: 40,
+              vertical: MediaQuery.of(context).size.height * 0.07),
           height: MediaQuery.of(context).size.height,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,7 +371,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 40, horizontal: 40),
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 40),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: !isAlreadyAUser
@@ -459,34 +472,34 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                       isAlreadyAUser ? Container() : Spacer(),
-                      TextField(
-                        controller: phoneEditingController,
-                        autocorrect: false,
-                        maxLength: 10,
-                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                        keyboardType: TextInputType.phone,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.5,
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'XXXXXXXXXX',
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                          prefixIconConstraints:
-                              BoxConstraints(minWidth: 0, minHeight: 0),
-                          prefixIcon: Text(
-                            '+91 ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 1.5,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ),
-                      ),
-                      isAlreadyAUser ? Container() : Spacer(),
+                      // TextField(
+                      //   controller: phoneEditingController,
+                      //   autocorrect: false,
+                      //   maxLength: 10,
+                      //   maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                      //   keyboardType: TextInputType.phone,
+                      //   style: TextStyle(
+                      //     fontSize: 20,
+                      //     fontWeight: FontWeight.w600,
+                      //     letterSpacing: 1.5,
+                      //   ),
+                      //   decoration: InputDecoration(
+                      //     hintText: 'XXXXXXXXXX',
+                      //     hintStyle: TextStyle(color: Colors.grey.shade400),
+                      //     prefixIconConstraints:
+                      //         BoxConstraints(minWidth: 0, minHeight: 0),
+                      //     prefixIcon: Text(
+                      //       '+91 ',
+                      //       style: TextStyle(
+                      //         fontSize: 20,
+                      //         fontWeight: FontWeight.w800,
+                      //         letterSpacing: 1.5,
+                      //         color: Colors.grey.shade600,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      // isAlreadyAUser ? Container() : Spacer(),
                       TextButton(
                         style: ButtonStyle(
                           padding:
@@ -510,71 +523,105 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () async {
-                          _auth.verifyPhoneNumber(
-                            phoneNumber: '+91${phoneEditingController.text}',
-                            timeout: Duration(seconds: 120),
-                            verificationFailed: (authException) => print(
-                                "Failed!\nMessage:\n${authException.message}"),
-                            codeSent: (verificationId,
-                                [forceResendingToken]) async {
-                              this.verificationId = verificationId;
-                              this.isProvidingOtp = true;
-                              String otpCode = await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => OtpEntryScreen(
-                                    phoneNumber:
-                                        '+91${phoneEditingController.text}',
-                                  ),
-                                ),
-                              );
-                              this.isProvidingOtp = false;
-                              if (otpCode == '') {
-                                return;
-                              }
+                          final providers = [
+                            AuthUiProvider.phone,
+                            AuthUiProvider.apple,
+                          ];
 
-                              try {
-                                var credential = FirebaseAuthLibrary
-                                    .PhoneAuthProvider.credential(
-                                  verificationId: this.verificationId,
-                                  smsCode: otpCode,
-                                );
-
-                                await _auth.signInWithCredential(credential);
-                                if (this.isAlreadyAUser) {
-                                  await Provider.of<User>(context,
-                                          listen: false)
-                                      .login(phoneEditingController.text);
-                                } else {
-                                  await Provider.of<User>(context,
-                                          listen: false)
-                                      .register(nameEditingController.text,
-                                          phoneEditingController.text);
-                                }
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    Routes.HOME.path,
-                                        (Route<dynamic> route) => false);
-                              } on FirebaseAuthLibrary
-                                  .FirebaseAuthException catch (e) {
-                                print(e.code);
-                                if (e.code == "invalid-verification-code") {
-                                  print("Invalid Code!");
-                                }
-                              }
-                            },
-                            codeAutoRetrievalTimeout: (verificationId) {
-                              this.verificationId = verificationId;
-                              if (this.isProvidingOtp) {
-                                Navigator.of(context).pop('');
-                              }
-
-                              print("Time Out!");
-                            },
-                            verificationCompleted:
-                                (FirebaseAuthLibrary.PhoneAuthCredential
-                                    phoneAuthCredential) {
-                              _auth.signInWithCredential(phoneAuthCredential);
-                            },
+                          final result = await FlutterAuthUi.startUi(
+                            items: providers,
+                            tosAndPrivacyPolicy: TosAndPrivacyPolicy(
+                              tosUrl: "https://www.google.com",
+                              privacyPolicyUrl: "https://www.google.com",
+                            ),
+                            androidOption: AndroidOption(
+                              enableSmartLock: false, // default true
+                              showLogo: true, // default false
+                              overrideTheme: false, // default false
+                            ),
                           );
+
+                          if (result) {
+                            _auth.currentUser?.reload();
+                            if (_auth.currentUser != null) {
+                              await Provider.of<User>(context, listen: false)
+                                  .register(
+                                nameEditingController.text,
+                                (_auth.currentUser?.phoneNumber).toString(),
+                              );
+
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                Routes.HOME.path,
+                                (Route<dynamic> route) => false,
+                              );
+                            }
+                          }
+                          // _auth.verifyPhoneNumber(
+                          //   phoneNumber: '+91${phoneEditingController.text}',
+                          //   timeout: Duration(seconds: 120),
+                          //   verificationFailed: (authException) => print(
+                          //       "Failed!\nMessage:\n${authException.message}"),
+                          //   codeSent: (verificationId,
+                          //       [forceResendingToken]) async {
+                          //     this.verificationId = verificationId;
+                          //     this.isProvidingOtp = true;
+                          //     String otpCode = await Navigator.of(context).push(
+                          //       MaterialPageRoute(
+                          //         builder: (context) => OtpEntryScreen(
+                          //           phoneNumber:
+                          //               '+91${phoneEditingController.text}',
+                          //         ),
+                          //       ),
+                          //     );
+                          //     this.isProvidingOtp = false;
+                          //     if (otpCode == '') {
+                          //       return;
+                          //     }
+                          //
+                          //     try {
+                          //       var credential = FirebaseAuthLibrary
+                          //           .PhoneAuthProvider.credential(
+                          //         verificationId: this.verificationId,
+                          //         smsCode: otpCode,
+                          //       );
+                          //
+                          //       await _auth.signInWithCredential(credential);
+                          //       if (this.isAlreadyAUser) {
+                          //         await Provider.of<User>(context,
+                          //                 listen: false)
+                          //             .login(phoneEditingController.text);
+                          //       } else {
+                          //         await Provider.of<User>(context,
+                          //                 listen: false)
+                          //             .register(nameEditingController.text,
+                          //                 phoneEditingController.text);
+                          //       }
+                          //       Navigator.of(context).pushNamedAndRemoveUntil(
+                          //           Routes.HOME.path,
+                          //               (Route<dynamic> route) => false);
+                          //     } on FirebaseAuthLibrary
+                          //         .FirebaseAuthException catch (e) {
+                          //       print(e.code);
+                          //       print(e);
+                          //       if (e.code == "invalid-verification-code") {
+                          //         print("Invalid Code!");
+                          //       }
+                          //     }
+                          //   },
+                          //   codeAutoRetrievalTimeout: (verificationId) {
+                          //     this.verificationId = verificationId;
+                          //     if (this.isProvidingOtp) {
+                          //       Navigator.of(context).pop('');
+                          //     }
+                          //
+                          //     print("Time Out!");
+                          //   },
+                          //   verificationCompleted:
+                          //       (FirebaseAuthLibrary.PhoneAuthCredential
+                          //           phoneAuthCredential) {
+                          //     _auth.signInWithCredential(phoneAuthCredential);
+                          //   },
+                          // );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -599,21 +646,47 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              SizedBox(height: 10),
               Align(
                 child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isAlreadyAUser = !isAlreadyAUser;
-                    });
+                  onTap: () async {
+                    final providers = [
+                      AuthUiProvider.phone,
+                      AuthUiProvider.apple,
+                    ];
+
+                    final result = await FlutterAuthUi.startUi(
+                      items: providers,
+                      tosAndPrivacyPolicy: TosAndPrivacyPolicy(
+                        tosUrl: "https://www.google.com",
+                        privacyPolicyUrl: "https://www.google.com",
+                      ),
+                      androidOption: AndroidOption(
+                        enableSmartLock: false, // default true
+                        showLogo: true, // default false
+                        overrideTheme: false, // default false
+                      ),
+                    );
+                    if (result) {
+                      _auth.currentUser?.reload();
+                      if (_auth.currentUser != null) {
+                        await Provider.of<User>(context, listen: false)
+                            .login((_auth.currentUser?.phoneNumber).toString());
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                          Routes.HOME.path,
+                              (Route<dynamic> route) => false,
+                        );
+                      }
+                    }
                   },
                   child: Text(
-                    isAlreadyAUser ? 'First time here?' : 'Already a user?',
+                    'Already a user?',
                     style: TextStyle(
                       color: Theme.of(context).accentColor,
                     ),
                   ),
                 ),
-                alignment: Alignment.centerRight,
+                alignment: Alignment.bottomRight,
               ),
             ],
           ),

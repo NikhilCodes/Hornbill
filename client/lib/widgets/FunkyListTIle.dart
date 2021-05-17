@@ -21,7 +21,7 @@ class _FunkyListTileState extends State<FunkyListTile> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(13),
         child: Material(
-          color: Colors.white,
+          color: Colors.grey.shade900,
           child: InkWell(
             splashColor: Theme.of(context).accentColor,
             onTap: widget.onTap,

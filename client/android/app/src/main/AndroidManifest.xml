@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <application
-        android:label="client"
+        android:label="Hornbill"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -18,6 +18,7 @@ class ContactSelectionScreen extends StatefulWidget {
 
 class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
   bool? _hasPermission;
+  int contactVerificationQueueLen = 0;
 
   List<Widget> contacts = [];
   List<String> selectedContactNumbers = [];
@@ -106,6 +107,12 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
 
     socket.onConnect((data) async {
       socket.on('phone.check.isRegistered:result', (data) {
+        contactVerificationQueueLen -= 1;
+        if (contactVerificationQueueLen <= 0) {
+          setState(() {
+            contactVerificationQueueLen = contactVerificationQueueLen;
+          });
+        }
         if (data['isRegistered']) {
           setState(() {
             contacts.add(SelectableListTile(
@@ -119,9 +126,13 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
               key: Key('${data['phoneNumber']}'),
               title: Text(
                 '${data['name']}',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style:
+                    TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
               ),
-              subtitle: Text('${data['phoneNumber']}'),
+              subtitle: Text(
+                '${data['phoneNumber']}',
+                style: TextStyle(color: Colors.grey),
+              ),
               leading: data['avatarImageUrl'] == ''
                   ? SizedBox(
                       height: 50,
@@ -146,6 +157,7 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
       });
 
       await Contacts.streamContacts().forEach((contact) {
+        contactVerificationQueueLen++;
         contact.phones.forEach((phoneNumber) {
           if (phoneNumber.value == null || phoneNumber.value == '') {
             return;
@@ -163,6 +175,10 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
               }));
         });
       });
+
+      setState(() {
+        contactVerificationQueueLen = contactVerificationQueueLen;
+      });
     });
   }
 
@@ -175,6 +191,7 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,11 +207,22 @@ class _ContactSelectionScreenState extends State<ContactSelectionScreen> {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: contacts.length,
-        itemBuilder: (context, index) {
-          return contacts[index];
-        },
+      body: Stack(
+        children: [
+          ListView.builder(
+            itemCount: contacts.length,
+            itemBuilder: (context, index) {
+              return contacts[index];
+            },
+          ),
+          contactVerificationQueueLen >= 0
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.purple,
+                  ),
+                )
+              : Container(),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(

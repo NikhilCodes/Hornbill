@@ -22,7 +22,7 @@ class _SelectableListTileState extends State<SelectableListTile> {
       key: widget.key,
       subtitle: widget.subtitle,
       leading: widget.leading,
-      selectedTileColor: Colors.greenAccent,
+      selectedTileColor: Colors.deepPurple.withOpacity(0.5),
       selected: isSelected,
       onTap: () {
         setState(() {

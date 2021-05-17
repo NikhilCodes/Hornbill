@@ -179,7 +179,7 @@ class CreateChatRoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple.shade50,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('Select Contact'),
       ),
@@ -188,11 +188,11 @@ class CreateChatRoomScreen extends StatelessWidget {
           FunkyListTile(
             title: Text(
               'Create group',
-              style: TextStyle(color: Theme.of(context).primaryColor),
+              style: TextStyle(color: Colors.white),
             ),
             leading: Icon(
               Icons.people_sharp,
-              color: Theme.of(context).primaryColor,
+              color: Colors.white,
             ),
             onTap: () {
               Navigator.of(context).pushNamed(Routes.CONTACT_SELECT.path);
