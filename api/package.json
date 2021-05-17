@@ -29,6 +29,7 @@
     "@nestjs/typeorm": "^7.1.5",
     "@nestjs/websockets": "^7.6.15",
     "@types/socket.io": "^2.1.13",
+    "morgan": "^1.10.0",
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
