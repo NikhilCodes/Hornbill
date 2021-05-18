@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:client/providers/ChatRoom.dart';
 import 'package:client/providers/User.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class ChatBlob extends StatelessWidget {
   final String message;
@@ -88,6 +92,15 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   ScrollController chatListViewController = new ScrollController();
 
   @override
+  void initState() {
+    Timer(
+        Duration(milliseconds: 300),
+            () => chatListViewController
+            .jumpTo(chatListViewController.position.maxScrollExtent));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var messages = Provider.of<ChatRoom>(context).messages;
     String name = Provider.of<ChatRoom>(context).name;
@@ -156,19 +169,20 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           children: [
             Flexible(
               child: ListView.builder(
+                reverse: true,
                 controller: chatListViewController,
                 itemCount: messages.length,
                 itemBuilder: (context, index) {
-                  chatListViewController.animateTo(
-                    chatListViewController.position.maxScrollExtent,
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.fastOutSlowIn,
-                  );
+                  // chatListViewController.animateTo(
+                  //   0,
+                  //   duration: Duration(milliseconds: 400),
+                  //   curve: Curves.fastOutSlowIn,
+                  // );
                   return ChatBlob(
                     message: messages[index]['message'],
                     senderName: messages[index]['senderName'],
                     time: messages[index]['time'],
-                    isOutgoingMessage: messages[index]['isOutgoingMessage'],
+                    isOutgoingMessage: messages[index]['isOutgoingMessage'] == 1 || messages[index]['isOutgoingMessage'],
                   );
                 },
               ),
@@ -182,7 +196,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                       keyboardType: TextInputType.multiline,
                       maxLines: 5,
                       minLines: 1,
-                      // maxLength: 200,
                       controller: messageTextController,
                       style: TextStyle(fontSize: 17, color: Colors.white),
                       decoration: InputDecoration(
@@ -222,7 +235,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     width: 55,
                     margin: EdgeInsets.only(left: 10),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (messageTextController.text.trim().length == 0)
                           return;
                         Provider.of<ChatRoom>(context, listen: false)

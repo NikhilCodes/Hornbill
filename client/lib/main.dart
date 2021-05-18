@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<User>(create: (_) => User()),
-        // ChangeNotifierProvider<ParticipatedChatRooms>(create: (_) => ParticipatedChatRooms()),
         ChangeNotifierProxyProvider<User, ParticipatedChatRooms>(
           create: (context) {
             return ParticipatedChatRooms(
