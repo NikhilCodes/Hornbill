@@ -182,7 +182,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                     message: messages[index]['message'],
                     senderName: messages[index]['senderName'],
                     time: messages[index]['time'],
-                    isOutgoingMessage: messages[index]['isOutgoingMessage'] == 1 || messages[index]['isOutgoingMessage'],
+                    isOutgoingMessage: messages[index]['isOutgoingMessage'] == 1,
                   );
                 },
               ),

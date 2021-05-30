@@ -97,7 +97,7 @@ class User extends ChangeNotifier {
     var jsonOutput = jsonDecode((await http.post(
       Uri.parse('$API_URL/user/login'),
       body: {
-        'phoneNumber': '+91' + phoneNumber,
+        'phoneNumber': phoneNumber,
       },
     ))
         .body);
